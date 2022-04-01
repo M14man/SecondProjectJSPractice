@@ -1,7 +1,8 @@
 const modals = () => {
     
+    let btnPressed = false;
 
-    function bindModal(trigerSelector, modalSelector, closeSelector, closeClickOverlay = true) {
+    function bindModal(trigerSelector, modalSelector, closeSelector, destroy = false) {
         
         const triger = document.querySelectorAll(trigerSelector),
             modal = document.querySelector(modalSelector),
@@ -12,10 +13,19 @@ const modals = () => {
         
         triger.forEach(item => {
             item.addEventListener('click', (e) => {
-                e.preventDefault();
+                if(e.target){
+                    e.preventDefault();
+                }
+
+                btnPressed = true;
+
+                if(destroy){
+                    item.remove();
+                }
 
                 windows.forEach(item => {
-                    item.style.display = 'none'; 
+                    item.style.display = 'none';
+                    item.classList.add('animated', 'fadeIn'); 
                 });
                
                 modal.style.display = 'block';
@@ -27,7 +37,8 @@ const modals = () => {
         close.forEach(btn => {
             btn.addEventListener('click', () => {
                 windows.forEach(item => {
-                    item.style.display = 'none'; 
+                    item.style.display = 'none';
+                     
                 });
                 modal.style.display = 'none';
                 document.body.style.overflow = '';
@@ -35,7 +46,7 @@ const modals = () => {
             });
             
             modal.addEventListener('click', (e) => {
-                if (e.target === modal && closeClickOverlay) {
+                if (e.target === modal) {
 
                     windows.forEach(item => {
                     item.style.display = 'none'; 
@@ -60,6 +71,9 @@ const modals = () => {
                 if (!display) { //якщо жодне модальне вікно не показується то ми відкриваємо його
                     document.querySelector(modalSelector).style.display = 'block';
                     document.body.style.overflow = 'hidden';
+                    let scroll = calcScroll();
+                    document.body.style.marginRight = `${scroll}px`;
+
                 }
             });
             
@@ -78,13 +92,28 @@ const modals = () => {
         div.remove();
         return scrollWidth;
     }
+
+    function openByScroll(selector){
+        window.addEventListener('scroll', ()=>{
+            if(!btnPressed && (window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight)){
+                document.querySelector(selector).click();
+            }
+        });
+    }
+
+
+
+    openByScroll('.fixed-gift');
     bindModal('.button-design', '.popup-design', '.popup-design .popup-close');
     bindModal('.button-consultation', '.popup-consultation', '.popup-consultation .popup-close');
+    bindModal('.fixed-gift', '.popup-gift', '.popup-gift .popup-close', true);
 
-    showModalByTime('.popup-consultation', 5000);
-    
+    // showModalByTime('.popup-consultation', 5000);
 
     
+    // window.pageYOffset; // це скільки ми відлистали зверху
+    // document.documentElement.clientHeight // це вісота вікна
+    // document.documentElement.scrollHeight   // це висота всього контенту 
 
 };
 

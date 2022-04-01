@@ -954,8 +954,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var modals = function modals() {
+  var btnPressed = false;
+
   function bindModal(trigerSelector, modalSelector, closeSelector) {
-    var closeClickOverlay = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
+    var destroy = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
     var triger = document.querySelectorAll(trigerSelector),
         modal = document.querySelector(modalSelector),
         close = document.querySelectorAll(closeSelector),
@@ -963,9 +965,19 @@ var modals = function modals() {
         scroll = calcScroll();
     triger.forEach(function (item) {
       item.addEventListener('click', function (e) {
-        e.preventDefault();
+        if (e.target) {
+          e.preventDefault();
+        }
+
+        btnPressed = true;
+
+        if (destroy) {
+          item.remove();
+        }
+
         windows.forEach(function (item) {
           item.style.display = 'none';
+          item.classList.add('animated', 'fadeIn');
         });
         modal.style.display = 'block';
         document.body.style.overflow = 'hidden';
@@ -982,7 +994,7 @@ var modals = function modals() {
         document.body.style.marginRight = "0px";
       });
       modal.addEventListener('click', function (e) {
-        if (e.target === modal && closeClickOverlay) {
+        if (e.target === modal) {
           windows.forEach(function (item) {
             item.style.display = 'none';
           });
@@ -1006,6 +1018,8 @@ var modals = function modals() {
           //якщо жодне модальне вікно не показується то ми відкриваємо його
           document.querySelector(modalSelector).style.display = 'block';
           document.body.style.overflow = 'hidden';
+          var scroll = calcScroll();
+          document.body.style.marginRight = "".concat(scroll, "px");
         }
       });
     }, time);
@@ -1023,9 +1037,21 @@ var modals = function modals() {
     return scrollWidth;
   }
 
+  function openByScroll(selector) {
+    window.addEventListener('scroll', function () {
+      if (!btnPressed && window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight) {
+        document.querySelector(selector).click();
+      }
+    });
+  }
+
+  openByScroll('.fixed-gift');
   bindModal('.button-design', '.popup-design', '.popup-design .popup-close');
   bindModal('.button-consultation', '.popup-consultation', '.popup-consultation .popup-close');
-  showModalByTime('.popup-consultation', 5000);
+  bindModal('.fixed-gift', '.popup-gift', '.popup-gift .popup-close', true); // showModalByTime('.popup-consultation', 5000);
+  // window.pageYOffset; // це скільки ми відлистали зверху
+  // document.documentElement.clientHeight // це вісота вікна
+  // document.documentElement.scrollHeight   // це висота всього контенту 
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (modals);
