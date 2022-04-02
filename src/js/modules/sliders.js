@@ -13,7 +13,7 @@ const sliders = (slides, dir, prev, next)=>{
             slideIndex = items.length;
         }
         items.forEach(item=>{
-            item.classList.add('animated');
+            item.classList.add('animate__animated');
             item.style.display = 'none';
         });
 
@@ -34,13 +34,13 @@ const sliders = (slides, dir, prev, next)=>{
 
         prevBtn.addEventListener('click', ()=>{
             plusSlides(-1);
-            items[slideIndex-1].classList.remove('slideInLeft');
-            items[slideIndex-1].classList.add('slideInRight');
+            items[slideIndex-1].classList.remove('animate__backInLeft');
+            items[slideIndex-1].classList.add('animate__backInRight');
         });
         nextBtn.addEventListener('click', ()=>{
             plusSlides(1);
-            items[slideIndex-1].classList.remove('slideInRight');
-            items[slideIndex-1].classList.add('slideInLeft');
+            items[slideIndex-1].classList.remove('animate__backInRight');
+            items[slideIndex-1].classList.add('animate__backInLeft');
         });
     } catch(e){}
 
@@ -48,13 +48,13 @@ const sliders = (slides, dir, prev, next)=>{
         if(dir === 'vertical'){
             paused = setInterval(function(){
                 plusSlides(1);
-                items[slideIndex-1].classList.add('slideInDown');
+                items[slideIndex-1].classList.add('animate__fadeInDownBig');
             }, 3000);
         }else{
             paused = setInterval(function(){
                 plusSlides(1);
-                items[slideIndex-1].classList.remove('slideInRight');
-                items[slideIndex-1].classList.add('slideInRight');
+                items[slideIndex-1].classList.remove('animate__backInRight');
+                items[slideIndex-1].classList.add('animate__backInLeft');
             }, 3000);
         }
 
