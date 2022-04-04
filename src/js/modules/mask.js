@@ -27,7 +27,7 @@ const mask = (selector)=>{
             val = def;
         }
 
-        this.value = matrix.replace(/./g, function(a){
+        this.value = matrix.replace(/./g, function(a){ // a технічний символ і він дорівнюватиме кожному символу який находиться в матриці
             return /[_\d]/.test(a) && i < val.length ? val.charAt(i++) : i >= val.length ? '' : a;
         });
 
@@ -38,6 +38,7 @@ const mask = (selector)=>{
         } else {
             setCursorPosition(this.value.length, this);
         }
+        console.log(this);
     }
 
     let inputs = document.querySelectorAll(selector);
