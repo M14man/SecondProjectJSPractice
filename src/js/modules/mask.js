@@ -38,7 +38,7 @@ const mask = (selector)=>{
         } else {
             setCursorPosition(this.value.length, this);
         }
-        console.log(this);
+        // console.log(this);
     }
 
     let inputs = document.querySelectorAll(selector);
