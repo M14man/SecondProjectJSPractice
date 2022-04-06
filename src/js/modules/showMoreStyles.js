@@ -22,10 +22,13 @@ const showMoreStyles = (trigger, wrapper) => {
     //     });
     // });
     btn.addEventListener('click', (e) => {
-        getResource('http://localhost:3000/styles')
-            .then(res => creatCards(res))
-            .catch(error => console.log(error));
-        e.target.remove();
+        e.target.classList.add('animate__animated', 'animate__flipOutY');
+        setTimeout(() => {
+            getResource('http://localhost:3000/styles')
+                .then(res => creatCards(res))
+                .catch(error => console.log(error));
+        }, 1000);
+        
     });
 
     function creatCards(response) {
