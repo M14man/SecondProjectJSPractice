@@ -1,12 +1,12 @@
 import { postData } from "../services/requests";
 
 
-const forms = () => {
+const forms = (state) => {
+
 
     const forms = document.querySelectorAll('form'),
         inputs = document.querySelectorAll('input'),
         upload = document.querySelectorAll('[name="upload"]');
-
     
     const message = {
         loading: 'Загрузка...',
@@ -18,8 +18,8 @@ const forms = () => {
     };
 
     const path = {
-        designer: 'assets/server.php',
-        question: 'assets/question.php'
+        designer: 'http://localhost:3000/request',
+        question: 'http://localhost:3000/questions'
     };
 
 
@@ -31,6 +31,7 @@ const forms = () => {
             item.previousElementSibling.textContent = 'Файл не выбран';
         });
     };
+
 
     upload.forEach(item=>{
         item.addEventListener('input', ()=>{
@@ -44,7 +45,7 @@ const forms = () => {
         });
     });
 
-    forms.forEach(item => {
+    forms.forEach((item, i) => {
         item.addEventListener('submit', (e) => {
             e.preventDefault();
 
@@ -67,11 +68,17 @@ const forms = () => {
             statusMessage.appendChild(textMessage);
 
             const formData = new FormData(item);
+            if (item.classList.contains('calc_form')) {
+                for (let key in state) {
+                    formData.append(key, state[key]);
+                }
+            }
+            console.log(formData);
             let api;
             item.closest('.popup-design') || item.classList.contains('calc_form') ? api = path.designer : api = path.question;
             console.log(api);
-
-            postData(api, formData)
+            const json = JSON.stringify(Object.fromEntries(formData.entries()));
+            postData(api, json)
                 .then(res => {
                     console.log(res);
                     statusImg.setAttribute('src', message.ok);
@@ -82,6 +89,12 @@ const forms = () => {
                     textMessage.textContent = message.failure;
                 })
                 .finally(() => {
+                    if (item.classList.contains('calc_form')) {
+                        document.querySelector('#size').value = '';
+                        document.querySelector('#material').value = '';
+                        document.querySelector('#options').value = '0';
+                        document.querySelector('.promocode').value = '';
+                    }
                     clearInputs();
 
                     setTimeout(() => {
