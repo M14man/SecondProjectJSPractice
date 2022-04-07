@@ -56,7 +56,7 @@ const filter = () => {
         typeFilter();
     });
 
-    
+
     items.forEach(item => {
         item.addEventListener('click', (e) => {
             items.forEach(item => {
