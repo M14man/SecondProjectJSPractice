@@ -1,0 +1,121 @@
+{
+  "styles": [
+    {
+      "src": "assets/img/styles-5.jpg",
+      "title": "Пастелью",
+      "link": "#pastel"
+    },
+    {
+      "src": "assets/img/styles-6.jpg",
+      "title": "Поп-арт",
+      "link": "#popart"
+    },
+    {
+      "src": "assets/img/styles-7.png",
+      "title": "Фотомозаика",
+      "link": "#mozaika"
+    },
+    {
+      "src": "assets/img/styles-8.jpg",
+      "title": "Шарж",
+      "link": "#sharj"
+    }
+  ],
+  "request": [
+    {
+      "upload": {},
+      "promocode": "false",
+      "size": "1000",
+      "material": "1.1",
+      "option": "1000",
+      "id": 1
+    },
+    {
+      "upload": {},
+      "promocode": "false",
+      "size": "1500",
+      "material": "1",
+      "option": "0",
+      "id": 2
+    },
+    {
+      "upload": {},
+      "promocode": "false",
+      "size": "500",
+      "material": "1.1",
+      "option": "2000",
+      "id": 3
+    },
+    {
+      "upload": {},
+      "name": "Дмитро Туровський",
+      "phone": "+09 (361) 780 45",
+      "email": "turovskydo@gmail.com",
+      "message": "",
+      "id": 4
+    },
+    {
+      "upload": {},
+      "promocode": "false",
+      "size": "1500",
+      "material": "1.1",
+      "option": "2000",
+      "id": 5
+    },
+    {
+      "upload": {},
+      "promocode": "false",
+      "id": 6
+    },
+    {
+      "upload": {},
+      "promocode": "false",
+      "user.pic": {},
+      "id": 7
+    },
+    {
+      "upload": {},
+      "promocode": "false",
+      "size": "1000",
+      "material": "1.1",
+      "option": "1000",
+      "id": 8
+    },
+    {
+      "upload": {},
+      "promocode": "false",
+      "id": 9
+    },
+    {
+      "upload": {},
+      "promocode": "false",
+      "size": "1000",
+      "material": "1.1",
+      "option": "2000",
+      "id": 10
+    },
+    {
+      "upload": {},
+      "promocode": "false",
+      "size": "500",
+      "material": "1",
+      "option": "1000",
+      "id": 11
+    }
+  ],
+  "questions": [
+    {
+      "id": 1
+    },
+    {
+      "name": "Дмитро Туровський",
+      "phone": "+38 (093) 617 80 45",
+      "id": 2
+    },
+    {
+      "name": "Дмитро Туровський",
+      "phone": "+38 (093) 617 80 45",
+      "id": 3
+    }
+  ]
+}
