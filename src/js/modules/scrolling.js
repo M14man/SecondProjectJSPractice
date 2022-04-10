@@ -11,66 +11,110 @@ const scrolling = (upSelector) => {
        }
     });
 
+     // Scrolling with raf
 
-    const element = document.documentElement,
-        body = document.body;
+    let links = document.querySelectorAll('[href^="#"]'),
+        speed = 0.3;
     
-    const calcScroll = () => {
-        upElem.addEventListener('click', function (event) {
-            let scrollTop = Math.round(body.scrollTop || element.scrollTop); // тут ми просто визначаэмо скыльки ми пролистали зверху
-            // console.log(scrollTop);
+    links.forEach(link => {
+        link.addEventListener('click', function(event) {
+            event.preventDefault();
 
-            if (this.hash !== '') {
-                event.preventDefault();
-                // let hashElement = document.getElementById(this.hash.substring(1));
-                let hashElement = document.querySelector(this.hash), // це ідентичний селектор тому що зверху
-                    hashElementTop = 0;
-                // console.log(hashElement);
+            let widthTop = document.documentElement.scrollTop,
+                hash = this.hash,
+                toBlock = document.querySelector(hash).getBoundingClientRect().top,
+                start = null;
 
-                console.log(hashElement.offsetTop);
+            requestAnimationFrame(step);
 
-                while (hashElement.offsetParent) {
-                    hashElementTop += hashElement.offsetTop;
-                    hashElement = hashElement.offsetParent;
+            function step(time) {
+                if (start === null) {
+                    start = time;
                 }
 
-                hashElementTop = Math.round(hashElementTop);
-                smoothScroll(scrollTop, hashElementTop, this.hash);
+                let progress = time - start,
+                    r = (toBlock < 0 ? Math.max(widthTop - progress/speed, widthTop + toBlock) : Math.min(widthTop + progress/speed, widthTop + toBlock));
+
+                    document.documentElement.scrollTo(0, r);
+
+                if (r != widthTop + toBlock) {
+                    requestAnimationFrame(step);
+                } else {
+                    location.hash = hash;
+                }
             }
         });
-    };
+    });
+
+
+
+
+
+
+
+
+
+    //                   Pure animation
+
+    // const element = document.documentElement,
+    //     body = document.body;
     
-    const smoothScroll = (from, to, hash) => {
-        let timeInterval = 1,
-            prevScrollTop,
-            speed;
+    // const calcScroll = () => {
+    //     upElem.addEventListener('click', function (event) {
+    //         let scrollTop = Math.round(body.scrollTop || element.scrollTop); // тут ми просто визначаэмо скыльки ми пролистали зверху
+    //         // console.log(scrollTop);
+
+    //         if (this.hash !== '') {
+    //             event.preventDefault();
+    //             // let hashElement = document.getElementById(this.hash.substring(1));
+    //             let hashElement = document.querySelector(this.hash), // це ідентичний селектор тому що зверху
+    //                 hashElementTop = 0;
+    //             // console.log(hashElement);
+
+    //             console.log(hashElement.offsetTop);
+
+    //             while (hashElement.offsetParent) {
+    //                 hashElementTop += hashElement.offsetTop;
+    //                 hashElement = hashElement.offsetParent;
+    //             }
+
+    //             hashElementTop = Math.round(hashElementTop);
+    //             smoothScroll(scrollTop, hashElementTop, this.hash);
+    //         }
+    //     });
+    // };
+    
+    // const smoothScroll = (from, to, hash) => {
+    //     let timeInterval = 1,
+    //         prevScrollTop,
+    //         speed;
         
-        if (to > from) {
-            speed = 30;
-        } else {
-            speed = -30;
-        }
+    //     if (to > from) {
+    //         speed = 30;
+    //     } else {
+    //         speed = -30;
+    //     }
 
-        let move = setInterval(function () {
-            let scrollTop = Math.round(body.scrollTop || element.scrollTop);
+    //     let move = setInterval(function () {
+    //         let scrollTop = Math.round(body.scrollTop || element.scrollTop);
 
-            if (
-                prevScrollTop === scrollTop ||
-                (to > from && scrollTop <= to) ||
-                (to < from && scrollTop <= to)
-            ) {
-                clearInterval(move);
-                history.replaceState(history.state, document.title, location.href.replace(/#.*$/g, '') + hash);
+    //         if (
+    //             prevScrollTop === scrollTop ||
+    //             (to > from && scrollTop <= to) ||
+    //             (to < from && scrollTop <= to)
+    //         ) {
+    //             clearInterval(move);
+    //             history.replaceState(history.state, document.title, location.href.replace(/#.*$/g, '') + hash);
                 
-            } else {
-                body.scrollTop += speed;
-                element.scrollTop += speed;
-                prevScrollTop = scrollTop;
-            }
-        }, timeInterval);
+    //         } else {
+    //             body.scrollTop += speed;
+    //             element.scrollTop += speed;
+    //             prevScrollTop = scrollTop;
+    //         }
+    //     }, timeInterval);
 
-    };
-    calcScroll();
+    // };
+    // calcScroll();
 
 };
 

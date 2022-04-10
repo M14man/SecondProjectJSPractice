@@ -5666,8 +5666,8 @@ var pictureSize = function pictureSize(block) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var core_js_modules_es_string_replace__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es.string.replace */ "./node_modules/core-js/modules/es.string.replace.js");
-/* harmony import */ var core_js_modules_es_string_replace__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_string_replace__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__);
 
 
 var scrolling = function scrolling(upSelector) {
@@ -5680,61 +5680,84 @@ var scrolling = function scrolling(upSelector) {
       upElem.classList.add('animate__fadeOut');
       upElem.classList.remove('animate__fadeIn');
     }
-  });
-  var element = document.documentElement,
-      body = document.body;
+  }); // Scrolling with raf
 
-  var calcScroll = function calcScroll() {
-    upElem.addEventListener('click', function (event) {
-      var scrollTop = Math.round(body.scrollTop || element.scrollTop); // тут ми просто визначаэмо скыльки ми пролистали зверху
-      // console.log(scrollTop);
+  var links = document.querySelectorAll('[href^="#"]'),
+      speed = 0.3;
+  links.forEach(function (link) {
+    link.addEventListener('click', function (event) {
+      event.preventDefault();
+      var widthTop = document.documentElement.scrollTop,
+          hash = this.hash,
+          toBlock = document.querySelector(hash).getBoundingClientRect().top,
+          start = null;
+      requestAnimationFrame(step);
 
-      if (this.hash !== '') {
-        event.preventDefault(); // let hashElement = document.getElementById(this.hash.substring(1));
-
-        var hashElement = document.querySelector(this.hash),
-            // це ідентичний селектор тому що зверху
-        hashElementTop = 0; // console.log(hashElement);
-
-        console.log(hashElement.offsetTop);
-
-        while (hashElement.offsetParent) {
-          hashElementTop += hashElement.offsetTop;
-          hashElement = hashElement.offsetParent;
+      function step(time) {
+        if (start === null) {
+          start = time;
         }
 
-        hashElementTop = Math.round(hashElementTop);
-        smoothScroll(scrollTop, hashElementTop, this.hash);
+        var progress = time - start,
+            r = toBlock < 0 ? Math.max(widthTop - progress / speed, widthTop + toBlock) : Math.min(widthTop + progress / speed, widthTop + toBlock);
+        document.documentElement.scrollTo(0, r);
+
+        if (r != widthTop + toBlock) {
+          requestAnimationFrame(step);
+        } else {
+          location.hash = hash;
+        }
       }
     });
-  };
-
-  var smoothScroll = function smoothScroll(from, to, hash) {
-    var timeInterval = 1,
-        prevScrollTop,
-        speed;
-
-    if (to > from) {
-      speed = 30;
-    } else {
-      speed = -30;
-    }
-
-    var move = setInterval(function () {
-      var scrollTop = Math.round(body.scrollTop || element.scrollTop);
-
-      if (prevScrollTop === scrollTop || to > from && scrollTop <= to || to < from && scrollTop <= to) {
-        clearInterval(move);
-        history.replaceState(history.state, document.title, location.href.replace(/#.*$/g, '') + hash);
-      } else {
-        body.scrollTop += speed;
-        element.scrollTop += speed;
-        prevScrollTop = scrollTop;
-      }
-    }, timeInterval);
-  };
-
-  calcScroll();
+  }); //                   Pure animation
+  // const element = document.documentElement,
+  //     body = document.body;
+  // const calcScroll = () => {
+  //     upElem.addEventListener('click', function (event) {
+  //         let scrollTop = Math.round(body.scrollTop || element.scrollTop); // тут ми просто визначаэмо скыльки ми пролистали зверху
+  //         // console.log(scrollTop);
+  //         if (this.hash !== '') {
+  //             event.preventDefault();
+  //             // let hashElement = document.getElementById(this.hash.substring(1));
+  //             let hashElement = document.querySelector(this.hash), // це ідентичний селектор тому що зверху
+  //                 hashElementTop = 0;
+  //             // console.log(hashElement);
+  //             console.log(hashElement.offsetTop);
+  //             while (hashElement.offsetParent) {
+  //                 hashElementTop += hashElement.offsetTop;
+  //                 hashElement = hashElement.offsetParent;
+  //             }
+  //             hashElementTop = Math.round(hashElementTop);
+  //             smoothScroll(scrollTop, hashElementTop, this.hash);
+  //         }
+  //     });
+  // };
+  // const smoothScroll = (from, to, hash) => {
+  //     let timeInterval = 1,
+  //         prevScrollTop,
+  //         speed;
+  //     if (to > from) {
+  //         speed = 30;
+  //     } else {
+  //         speed = -30;
+  //     }
+  //     let move = setInterval(function () {
+  //         let scrollTop = Math.round(body.scrollTop || element.scrollTop);
+  //         if (
+  //             prevScrollTop === scrollTop ||
+  //             (to > from && scrollTop <= to) ||
+  //             (to < from && scrollTop <= to)
+  //         ) {
+  //             clearInterval(move);
+  //             history.replaceState(history.state, document.title, location.href.replace(/#.*$/g, '') + hash);
+  //         } else {
+  //             body.scrollTop += speed;
+  //             element.scrollTop += speed;
+  //             prevScrollTop = scrollTop;
+  //         }
+  //     }, timeInterval);
+  // };
+  // calcScroll();
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (scrolling);
